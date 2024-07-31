@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .timer {
+            font-size: 24px;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .question {
+            margin: 20px 0;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .options {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .score-box {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #f9f9f9;
+    border-left: 1px solid #ddd;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.back-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.back-btn:hover {
+    background-color: #45a049;
+}
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="timer">REMAIN SECONDS: <span id="countdown">200</span>
+        <button class="btn" id="readBtn">READ ALOUD</button></div>
+<!-- Sidebar for Settings -->
+<div id="settingsSidebar" class="sidebar">
+    <button id="backBtn" class="back-btn">Back</button>
+    <div class="settings-panel">
+        <label for="pitch">Pitch:</label>
+        <input type="range" id="pitch" min="0" max="2" step="0.1" value="1">
+        <label for="rate">Speed:</label>
+        <input type="range" id="rate" min="0.1" max="2" step="0.1" value="1">
+        <label for="volume">Volume:</label>
+        <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
+    </div>
+</div>
+        <div id="quiz">
+            <!-- 20 Multiplication Questions -->
+ <div class="question">1. What is a noun?</div>
+<div class="options">
+    <label><input type="radio" name="q1" value="A">A. A type of food</label>
+    <label><input type="radio" name="q1" value="B">B. A person, place, thing, or animal</label>
+    <label><input type="radio" name="q1" value="C">C. A type of vehicle</label>
+    <label><input type="radio" name="q1" value="D">D. A kind of music</label>
+</div>
+
+<div class="question">2. Which of these is a noun?</div>
+<div class="options">
+    <label><input type="radio" name="q2" value="A">A. Run</label>
+    <label><input type="radio" name="q2" value="B">B. Happiness</label>
+    <label><input type="radio" name="q2" value="C">C. Quickly</label>
+    <label><input type="radio" name="q2" value="D">D. Green</label>
+</div>
+
+<div class="question">3. Which one is a proper noun?</div>
+<div class="options">
+    <label><input type="radio" name="q3" value="A">A. Book</label>
+    <label><input type="radio" name="q3" value="B">B. City</label>
+    <label><input type="radio" name="q3" value="C">C. London</label>
+    <label><input type="radio" name="q3" value="D">D. Cat</label>
+</div>
+
+<div class="question">4. What type of noun is “apple”?</div>
+<div class="options">
+    <label><input type="radio" name="q4" value="A">A. Proper noun</label>
+    <label><input type="radio" name="q4" value="B">B. Abstract noun</label>
+    <label><input type="radio" name="q4" value="C">C. Collective noun</label>
+    <label><input type="radio" name="q4" value="D">D. Common noun</label>
+</div>
+
+<div class="question">5. Which of the following is an example of a collective noun?</div>
+<div class="options">
+    <label><input type="radio" name="q5" value="A">A. Car</label>
+    <label><input type="radio" name="q5" value="B">B. Tree</label>
+    <label><input type="radio" name="q5" value="C">C. Team</label>
+    <label><input type="radio" name="q5" value="D">D. Pencil</label>
+</div>
+
+<div class="question">6. Which of these is an abstract noun?</div>
+<div class="options">
+    <label><input type="radio" name="q6" value="A">A. Dog</label>
+    <label><input type="radio" name="q6" value="B">B. House</label>
+    <label><input type="radio" name="q6" value="C">C. Bravery</label>
+    <label><input type="radio" name="q6" value="D">D. School</label>
+</div>
+
+<div class="question">7. Identify the proper noun in the following list:</div>
+<div class="options">
+    <label><input type="radio" name="q7" value="A">A. Table</label>
+    <label><input type="radio" name="q7" value="B">B. John</label>
+    <label><input type="radio" name="q7" value="C">C. Chair</label>
+    <label><input type="radio" name="q7" value="D">D. City</label>
+</div>
+
+<div class="question">8. What type of noun is “team”?</div>
+<div class="options">
+    <label><input type="radio" name="q8" value="A">A. Proper noun</label>
+    <label><input type="radio" name="q8" value="B">B. Collective noun</label>
+    <label><input type="radio" name="q8" value="C">C. Abstract noun</label>
+    <label><input type="radio" name="q8" value="D">D. Common noun</label>
+</div>
+
+<div class="question">9. Which noun refers to a specific place?</div>
+<div class="options">
+    <label><input type="radio" name="q9" value="A">A. Park</label>
+    <label><input type="radio" name="q9" value="B">B. Zoo</label>
+    <label><input type="radio" name="q9" value="C">C. Paris</label>
+    <label><input type="radio" name="q9" value="D">D. School</label>
+</div>
+
+<div class="question">10. Which of the following is a common noun?</div>
+<div class="options">
+    <label><input type="radio" name="q10" value="A">A. Mary</label>
+    <label><input type="radio" name="q10" value="B">B. Eiffel Tower</label>
+    <label><input type="radio" name="q10" value="C">C. Mountain</label>
+    <label><input type="radio" name="q10" value="D">D. McDonald's</label>
+</div>
+
+<div class="question">11. Choose the abstract noun:</div>
+<div class="options">
+    <label><input type="radio" name="q11" value="A">A. Joy</label>
+    <label><input type="radio" name="q11" value="B">B. Dog</label>
+    <label><input type="radio" name="q11" value="C">C. Pizza</label>
+    <label><input type="radio" name="q11" value="D">D. Car</label>
+</div>
+
+<div class="question">12. What type of noun is “family”?</div>
+<div class="options">
+    <label><input type="radio" name="q12" value="A">A. Common noun</label>
+    <label><input type="radio" name="q12" value="B">B. Proper noun</label>
+    <label><input type="radio" name="q12" value="C">C. Abstract noun</label>
+    <label><input type="radio" name="q12" value="D">D. Collective noun</label>
+</div>
+
+<div class="question">13. Which of these nouns is a person?</div>
+<div class="options">
+    <label><input type="radio" name="q13" value="A">A. Book</label>
+    <label><input type="radio" name="q13" value="B">B. Cat</label>
+    <label><input type="radio" name="q13" value="C">C. Teacher</label>
+    <label><input type="radio" name="q13" value="D">D. City</label>
+</div>
+
+<div class="question">14. What type of noun is “city”?**</div>
+<div class="options">
+    <label><input type="radio" name="q14" value="A">A. Abstract noun</label>
+    <label><input type="radio" name="q14" value="B">B. Proper noun</label>
+    <label><input type="radio" name="q14" value="C">C. Collective noun</label>
+    <label><input type="radio" name="q14" value="D">D. Common noun</label>
+</div>
+
+<div class="question">15. Which noun is a thing?</div>
+<div class="options">
+    <label><input type="radio" name="q15" value="A">A. Teacher</label>
+    <label><input type="radio" name="q15" value="B">B. Car</label>
+    <label><input type="radio" name="q15" value="C">C. Park</label>
+    <label><input type="radio" name="q15" value="D">D. Joy</label>
+</div>
+
+<div class="question">16. What type of noun is “happiness”?</div>
+<div class="options">
+    <label><input type="radio" name="q16" value="A">A. Proper noun</label>
+    <label><input type="radio" name="q16" value="B">B. Common noun</label>
+    <label><input type="radio" name="q16" value="C">C. Abstract noun</label>
+    <label><input type="radio" name="q16" value="D">D. Collective noun</label>
+</div>
+
+  <div class="question">17. Which of these nouns is an animal?</div>
+<div class="options">
+    <label><input type="radio" name="q17" value="A">A. Apple</label>
+    <label><input type="radio" name="q17" value="B">B. School</label>
+    <label><input type="radio" name="q17" value="C">C. Elephant</label>
+    <label><input type="radio" name="q17" value="D">D. Happiness</label>
+</div>
+
+<div class="question">18. Identify the collective noun:</div>
+<div class="options">
+    <label><input type="radio" name="q18" value="A">A. Family</label>
+    <label><input type="radio" name="q18" value="B">B. Pen</label>
+    <label><input type="radio" name="q18" value="C">C. Cat</label>
+    <label><input type="radio" name="q18" value="D">D. River</label>
+</div>
+
+<div class="question">19. Which of the following is a proper noun?</div>
+<div class="options">
+    <label><input type="radio" name="q19" value="A">A. River</label>
+    <label><input type="radio" name="q19" value="B">B. Dog</label>
+    <label><input type="radio" name="q19" value="C">C. Australia</label>
+    <label><input type="radio" name="q19" value="D">D. Restaurant</label>
+</div>
+
+<div class="question">20. Choose the common noun from this list:</div>
+<div class="options">
+    <label><input type="radio" name="q20" value="A">A. Mona Lisa</label>
+    <label><input type="radio" name="q20" value="B">B. Mountain</label>
+    <label><input type="radio" name="q20" value="C">C. Toyota</label>
+    <label><input type="radio" name="q20" value="D">D. Jupiter</label>
+</div>         
+                           </div>
+
+            <button class="btn" id="submitBtn">FINISHED</button>
+            <div class="score-box" id="scoreBox"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize attempt counter
+        let attemptCounter = 0;
+
+        // Countdown Timer
+        let countdown = 200; // seconds
+        const countdownElement = document.getElementById('countdown');
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                alert('Time is up!');
+                // Automatically submit quiz when time is up
+                submitQuiz();
+            }
+        }, 1000);
+
+        // Submit Button Functionality
+        document.getElementById('submitBtn').addEventListener('click', submitQuiz);
+
+        function submitQuiz() {
+            let score = 0;
+            const correctAnswers = {
+                q1: 'B',
+                q2: 'B',
+                q3: 'C',
+                q4: 'D',
+                q5: 'C',
+                q6: 'C',
+                q7: 'B',
+                q8: 'B',
+                q9: 'C',
+                q10: 'C',
+                q11: 'A',
+                q12: 'D',
+                q13: 'C',
+                q14: 'D',
+                q15: 'B',
+                q16: 'C',
+                q17: 'C',
+                q18: 'A',
+                q19: 'C',
+                q20: 'B'
+            };
+
+            for (let i = 1; i <= 20; i++) {
+                const checkedValue = document.querySelector(`input[name="q${i}"]:checked`);
+                if (checkedValue && checkedValue.value === correctAnswers[`q${i}`]) {
+                    score++;
+                }
+            }
+
+            const scoreBox = document.getElementById('scoreBox');
+            scoreBox.textContent = `SCORE: ${score}`;
+
+            if (score === 20) {
+                showModal('CONGRATULATIONS 🎉🎉🎉');
+                setTimeout(() => {
+                    window.location.href = 'dialogue.html';
+                }, 3000);
+            } else {
+                attemptCounter++;
+                if (attemptCounter < 3) {
+                    showModal('Answer the questions properly');
+                } else {
+                    showModal('Study hard');
+                    setTimeout(() => {
+                        window.location.href = 'English.html';
+                    }, 3000);
+                }
+            }
+        }
+
+        // Show Modal
+        function showModal(message) {
+            const modal = document.getElementById('myModal');
+            const modalMessage = document.getElementById('modalMessage');
+            modal.style.display = 'block';
+            modalMessage.textContent = message;
+        }
+
+        // Close Modal
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('myModal').style.display = 'none';
+        });
+
+        // Click outside of modal to close it
+        window.addEventListener('click', (event) => {
+            if (event.target == document.getElementById('myModal')) {
+                document.getElementById('myModal').style.display = 'none';
+            }
+        });
+        // Read Aloud Functionality
+    document.getElementById('readBtn').addEventListener('click', () => {
+        const questions = document.querySelectorAll('.question');
+        questions.forEach((question, index) => {
+            setTimeout(() => {
+                const utterance = new SpeechSynthesisUtterance(question.textContent);
+                window.speechSynthesis.speak(utterance);
+            }, index * 2000); // Delay between questions
+        });
+    });
+    
+    </script>
+</body>
+</html>               
+  
+  
+  
+  

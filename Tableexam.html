@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .timer {
+            font-size: 24px;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .question {
+            margin: 20px 0;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .options {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .score-box {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="timer">ቀሪ የጊዜ ሰከንድ: <span id="countdown">200</span></div>
+
+        <div id="quiz">
+            <!-- 20 Multiplication Questions -->
+            <div class="question">1. 3 × 2 እንዴት ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q1" value="ሀ">ሀ. 5</label>
+                <label><input type="radio" name="q1" value="ለ">ለ. 6</label>
+                <label><input type="radio" name="q1" value="ሐ">ሐ. 7</label>
+            </div>
+
+            <div class="question">2. 4 × 5 እንዴት ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q2" value="ሀ">ሀ. 20</label>
+                <label><input type="radio" name="q2" value="ለ">ለ. 15</label>
+                <label><input type="radio" name="q2" value="ሐ">ሐ. 25</label>
+            </div>
+
+            <div class="question">3. 7 × 8 እንዴት ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q3" value="ሀ">ሀ. 56</label>
+                <label><input type="radio" name="q3" value="ለ">ለ. 64</label>
+                <label><input type="radio" name="q3" value="ሐ">ሐ. 72</label>
+            </div>
+
+            <div class="question">4. 9 × 3 እንዴት ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q4" value="ሀ">ሀ. 27</label>
+                <label><input type="radio" name="q4" value="ለ">ለ. 24</label>
+                <label><input type="radio" name="q4" value="ሐ">ሐ. 30</label>
+            </div>
+
+            <div class="question">5. 6 × 7 እንዴት ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q5" value="ሀ">ሀ. 42</label>
+                <label><input type="radio" name="q5" value="ለ">ለ. 48</label>
+                <label><input type="radio" name="q5" value="ሐ">ሐ. 36</label>
+            </div>
+
+            <div class="question">6. 2 × 9 እንዴት ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q6" value="ሀ">ሀ. 18</label>
+                <label><input type="radio" name="q6" value="ለ">ለ. 20</label>
+                <label><input type="radio" name="q6" value="ሐ">ሐ. 16</label>
+            </div>
+
+            <div class="question">7. 5 × 6 እንዴት ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q7" value="ሀ">ሀ. 30</label>
+                <label><input type="radio" name="q7" value="ለ">ለ. 32</label>
+                <label><input type="radio" name="q7" value="ሐ">ሐ. 28</label>
+            </div>
+
+            <div class="question">8. 8 × 4 እንዴት ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q8" value="ሀ">ሀ. 32</label>
+                <label><input type="radio" name="q8" value="ለ">ለ. 36</label>
+                <label><input type="radio" name="q8" value="ሐ">ሐ. 28</label>
+            </div>
+
+            <div class="question">9. 7 × 5 እንዴት ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q9" value="ሀ">ሀ. 35</label>
+                <label><input type="radio" name="q9" value="ለ">ለ. 40</label>
+                <label><input type="radio" name="q9" value="ሐ">ሐ. 30</label>
+            </div>
+
+            <div class="question">10. 3 × 8 እንዴት ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q10" value="ሀ">ሀ. 24</label>
+                <label><input type="radio" name="q10" value="ለ">ለ. 22</label>
+                <label><input type="radio" name="q10" value="ሐ">ሐ. 20</label>
+            </div>
+
+<div class="question">11. 3 × 4 = ?</div>
+            <div class="options">
+                <label><input type="radio" name="q11" value="ሀ">ሀ. 7</label>
+                <label><input type="radio" name="q11" value="ለ">ለ. 12</label>
+                <label><input type="radio" name="q11" value="ሐ">ሐ. 15</label>
+            </div>
+
+            <div class="question">12. 6 × 5 = ?</div>
+            <div class="options">
+                <label><input type="radio" name="q12" value="ሀ">ሀ. 30</label>
+                <label><input type="radio" name="q12" value="ለ">ለ. 25</label>
+                <label><input type="radio" name="q12" value="ሐ">ሐ. 35</label>
+            </div>
+
+            <div class="question">13. 7 × 8 = ?</div>
+            <div class="options">
+                <label><input type="radio" name="q13" value="ሀ">ሀ. 54</label>
+                <label><input type="radio" name="q13" value="ለ">ለ. 56</label>
+                <label><input type="radio" name="q13" value="ሐ">ሐ. 60</label>
+            </div>
+
+            <div class="question">14. 9 × 2 = ?</div>
+            <div class="options">
+                <label><input type="radio" name="q14" value="ሀ">ሀ. 20</label>
+                <label><input type="radio" name="q14" value="ለ">ለ. 18</label>
+                <label><input type="radio" name="q14" value="ሐ">ሐ. 16</label>
+            </div>
+
+            <div class="question">15. 5 × 7 = ?</div>
+            <div class="options">
+                <label><input type="radio" name="q15" value="ሀ">ሀ. 35</label>
+                <label><input type="radio" name="q15" value="ለ">ለ. 30</label>
+                <label><input type="radio" name="q15" value="ሐ">ሐ. 40</label>
+            </div>
+
+            <div class="question">16. 8 × 6 = ?</div>
+            <div class="options">
+                <label><input type="radio" name="q16" value="ሀ">ሀ. 48</label>
+                <label><input type="radio" name="q16" value="ለ">ለ. 54</label>
+                <label><input type="radio" name="q16" value="ሐ">ሐ. 60</label>
+            </div>
+
+            <div class="question">17. 4 × 9 = ?</div>
+            <div class="options">
+                <label><input type="radio" name="q17" value="ሀ">ሀ. 36</label>
+                <label><input type="radio" name="q17" value="ለ">ለ. 32</label>
+                <label><input type="radio" name="q17" value="ሐ">ሐ. 40</label>
+            </div>
+
+            <div class="question">18. 2 × 7 = ?</div>
+            <div class="options">
+                <label><input type="radio" name="q18" value="ሀ">ሀ. 16</label>
+                <label><input type="radio" name="q18" value="ለ">ለ. 14</label>
+                <label><input type="radio" name="q18" value="ሐ">ሐ. 18</label>
+            </div>
+
+            <div class="question">19. 3 × 6 = ?</div>
+            <div class="options">
+                <label><input type="radio" name="q19" value="ሀ">ሀ. 20</label>
+                <label><input type="radio" name="q19" value="ለ">ለ. 18</label>
+                <label><input type="radio" name="q19" value="ሐ">ሐ. 21</label>
+            </div>
+
+            <div class="question">20. 7 × 5 = ?</div>
+            <div class="options">
+                <label><input type="radio" name="q20" value="ሀ">ሀ. 35</label>
+                <label><input type="radio" name="q20" value="ለ">ለ. 30</label>
+                <label><input type="radio" name="q20" value="ሐ">ሐ. 40</label>
+            </div>
+
+            <button class="btn" id="submitBtn">ጨርሻለው</button>
+            <div class="score-box" id="scoreBox"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize attempt counter
+        let attemptCounter = 0;
+
+        // Countdown Timer
+        let countdown = 200; // seconds
+        const countdownElement = document.getElementById('countdown');
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                alert('Time is up!');
+                // Automatically submit quiz when time is up
+                submitQuiz();
+            }
+        }, 1000);
+
+        // Submit Button Functionality
+        document.getElementById('submitBtn').addEventListener('click', submitQuiz);
+
+        function submitQuiz() {
+            let score = 0;
+            const correctAnswers = {
+                q1: 'ሀ',
+                q2: 'ለ',
+                q3: 'ሐ',
+                q4: 'ሀ',
+                q5: 'ሀ',
+                q6: 'ሀ',
+                q7: 'ሐ',
+                q8: 'ለ',
+                q9: 'ሐ',
+                q10: 'ሀ',
+                q11: 'ለ',
+                q12: 'ሀ',
+                q13: 'ለ',
+                q14: 'ለ',
+                q15: 'ሀ',
+                q16: 'ሀ',
+                q17: 'ሐ',
+                q18: 'ለ',
+                q19: 'ለ',
+                q20: 'ሀ'
+            };
+
+            for (let i = 1; i <= 20; i++) {
+                const checkedValue = document.querySelector(`input[name="q${i}"]:checked`);
+                if (checkedValue && checkedValue.value === correctAnswers[`q${i}`]) {
+                    score++;
+                }
+            }
+
+            const scoreBox = document.getElementById('scoreBox');
+            scoreBox.textContent = `SCORE: ${score}`;
+
+            if (score === 20) {
+                showModal('CONGRATULATIONS 🎉🎉🎉');
+                setTimeout(() => {
+                    window.location.href = 'Finish.html';
+                }, 3000);
+            } else {
+                attemptCounter++;
+                if (attemptCounter < 3) {
+                    showModal('Answer the questions properly');
+                } else {
+                    showModal('Study hard');
+                    setTimeout(() => {
+                        window.location.href = 'Table.html';
+                    }, 3000);
+                }
+            }
+        }
+
+        // Show Modal
+        function showModal(message) {
+            const modal = document.getElementById('myModal');
+            const modalMessage = document.getElementById('modalMessage');
+            modal.style.display = 'block';
+            modalMessage.textContent = message;
+        }
+
+        // Close Modal
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('myModal').style.display = 'none';
+        });
+
+        // Click outside of modal to close it
+        window.addEventListener('click', (event) => {
+            if (event.target == document.getElementById('myModal')) {
+                document.getElementById('myModal').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>            

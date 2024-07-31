@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Video Player</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+
+        .video-container {
+            position: relative;
+            max-width: 90%;
+            width: 100%;
+            border: 4px solid #ff69b4;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            background-color: #e6e6fa;
+            transition: all 0.3s ease;
+        }
+
+        .video-container.fullscreen-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.9);
+            z-index: 9999;
+            border-radius: 0;
+            box-shadow: none;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 4px solid #ff69b4;
+            transition: transform 0.3s ease;
+        }
+
+        .video-container.fullscreen-mode video {
+            transform: rotate(0deg);
+            height: 100vh;
+            width: 100vh;
+        }
+
+        .controls, .subtitle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: rgba(255, 182, 193, 0.7);
+            border-top: 4px solid #ff69b4;
+            border-radius: 0 0 12px 12px;
+            transition: opacity 0.3s ease;
+        }
+
+        .controls.hidden, .subtitle-container.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        button {
+            margin: 0 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #ff69b4;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #ff1493;
+            transform: scale(1.1);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        input[type="range"] {
+            margin: 0 8px;
+            cursor: pointer;
+            background: linear-gradient(to right, #ff69b4, #e6e6fa);
+            border-radius: 8px;
+        }
+
+        #seekBar {
+            width: 50%;
+        }
+
+        #volumeBar {
+            width: 25%;
+        }
+
+        .subtitle-container {
+            margin-top: 10px;
+            justify-content: flex-end;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container" id="videoContainer">
+        <video id="videoPlayer" controls>
+            <source src="video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="controls" id="controls">
+            <button id="playPauseBtn">Play</button>
+            <button id="volumeBtn">Mute</button>
+            <input type="range" id="seekBar" value="0">
+            <input type="range" id="volumeBar" value="100">
+            <button id="fullScreenBtn">Fullscreen</button>
+            <button id="previewBtn">Preview</button>
+        </div>
+        <div class="subtitle-container">
+            <button id="subtitleBtn">Subtitles</button>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('videoPlayer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const volumeBtn = document.getElementById('volumeBtn');
+        const seekBar = document.getElementById('seekBar');
+        const volumeBar = document.getElementById('volumeBar');
+        const fullScreenBtn = document.getElementById('fullScreenBtn');
+        const subtitleBtn = document.getElementById('subtitleBtn');
+        const previewBtn = document.getElementById('previewBtn');
+        const videoContainer = document.getElementById('videoContainer');
+        const controls = document.getElementById('controls');
+
+        // Play/Pause button
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.textContent = 'Pause';
+            } else {
+                video.pause();
+                playPauseBtn.textContent = 'Play';
+            }
+        });
+
+        // Volume button
+        volumeBtn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            volumeBtn.textContent = video.muted ? 'Unmute' : 'Mute';
+        });
+
+        // Seek bar
+        video.addEventListener('timeupdate', () => {
+            seekBar.value = (video.currentTime / video.duration) * 100;
+        });
+
+        seekBar.addEventListener('input', () => {
+            video.currentTime = video.duration * (seekBar.value / 100);
+        });
+
+        // Volume bar
+        volumeBar.addEventListener('input', () => {
+            video.volume = volumeBar.value / 100;
+        });
+
+        // Fullscreen button
+        fullScreenBtn.addEventListener('click', () => {
+            if (videoContainer.classList.contains('fullscreen-mode')) {
+                document.exitFullscreen();
+                videoContainer.classList.remove('fullscreen-mode');
+                controls.classList.remove('hidden');
+                fullScreenBtn.textContent = 'Fullscreen';
+            } else {
+                videoContainer.requestFullscreen().then(() => {
+                    videoContainer.classList.add('fullscreen-mode');
+                    controls.classList.add('hidden');
+                    fullScreenBtn.textContent = 'Exit Fullscreen';
+                });
+            }
+        });
+
+        // Preview button
+        previewBtn.addEventListener('click', () => {
+            videoContainer.classList.toggle('preview-mode');
+            previewBtn.textContent = videoContainer.classList.contains('preview-mode') ? 'Exit Preview' : 'Preview';
+            if (videoContainer.classList.contains('preview-mode')) {
+                video.style.height = '100vh'; // Set video to full height in preview mode
+            } else {
+                video.style.height = 'auto'; // Reset video height when exiting preview mode
+            }
+        });
+
+        // Subtitle button
+        subtitleBtn.addEventListener('click', () => {
+            alert('Subtitles feature coming soon!');
+        });
+    </script>
+</body>
+</html>
