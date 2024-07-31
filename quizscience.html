@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .timer {
+            font-size: 24px;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .question {
+            margin: 20px 0;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .options {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .score-box {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="timer">ቀሪ ጊዜ : <span id="countdown">200</span></div>
+
+        <div id="quiz">
+            <!-- 20 Multiplication Questions -->
+           
+                <label>1. ምግብ ምንድን ነው?</label>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="ሀ"> ሀ) የምንጠጣው ነገር</label>
+                    <label><input type="radio" name="q1" value="ለ"> ለ) የምንበላውና የምንጠጣው ሁሉ</label>
+                    <label><input type="radio" name="q1" value="ሐ"> ሐ) የአካል ብቃት እንቅስቃሴ ዓይነት</label>
+                    <label><input type="radio" name="q1" value="መ"> መ) የመዝናኛ ዓይነት</label>
+                </div>
+            </div>
+            <div class="question">
+                <label>2. ምግብ ከየት ይመጣል?</label>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="ሀ"> ሀ) ከእንስሳት ብቻ</label>
+                    <label><input type="radio" name="q2" value="ለ"> ለ) ከተክሎች ብቻ</label>
+                    <label><input type="radio" name="q2" value="ሐ"> ሐ) ከሁለቱም ተክሎች እና እንስሳት</label>
+                    <label><input type="radio" name="q2" value="መ"> መ) ከሰማይ</label>
+                </div>
+            </div>
+            <div class="question">
+                <label>3. ከሚከተሉት ውስጥ ከዕፅዋት የተቀመመ ምግብ የትኛው ነው?</label>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="ሀ"> ሀ) ወተት</label>
+                    <label><input type="radio" name="q3" value="ለ"> ለ) እንቁላል</label>
+                    <label><input type="radio" name="q3" value="ሐ"> ሐ) አፕል</label>
+                    <label><input type="radio" name="q3" value="መ"> መ) ሥጋ</label>
+                </div>
+            </div>
+            <div class="question">
+                <label>4. ከዳቦ እና ከሩዝ የሚገኘው ካርቦሃይድሬትስ ምን ይሰጣል?</label>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="ሀ"> ሀ) ፕሮቲኖች</label>
+                    <label><input type="radio" name="q4" value="ለ"> ለ) ቫይታሚኖች</label>
+                    <label><input type="radio" name="q4" value="ሐ"> ሐ) ጉልበት</label>
+                    <label><input type="radio" name="q4" value="መ"> መ) ፋይበር</label>
+                </div>
+            </div>
+            <div class="question">
+                <label>5. ጡንቻዎች እንዲያድጉ የሚረዳው የትኛው ንጥረ ነገር ነው?</label>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="ሀ"> ሀ) ካርቦሃይድሬትስ</label>
+                    <label><input type="radio" name="q5" value="ለ"> ለ) ፕሮቲኖች</label>
+                    <label><input type="radio" name="q5" value="ሐ"> ሐ) ቫይታሚኖች</label>
+                    <label><input type="radio" name="q5" value="መ"> መ) ማዕድናት</label>
+                </div>
+            </div>
+            <div class="question">
+                <label>6. ከአትክልትና ፍራፍሬ የሚገኙ ቪታሚኖች እና ማዕድናት በምን ይረዷቸዋል?</label>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="ሀ"> ሀ) እድገት</label>
+                    <label><input type="radio" name="q6" value="ለ"> ለ) ጉልበት</label>
+                    <label><input type="radio" name="q6" value="ሐ"> ሐ) በሽታን መዋጋት</label>
+                    <label><input type="radio" name="q6" value="መ"> መ) እርጥበት</label>
+                </div>
+            </div>
+            <div class="question">
+                <label>7. ጤናማ ምግብ መመገብ ለጉልበት ምን ጥቅም አለው?</label>
+                <div class="options">
+                    <label><input type="radio" name="q7" value="ሀ"> ሀ) ጉልበትን ይቀንሳል</label>
+                    <label><input type="radio" name="q7" value="ለ"> ለ) ጉልበት ይሰጣል</label>
+                    <label><input type="radio" name="q7" value="ሐ"> ሐ) በኃይል ላይ ምንም ተጽእኖ የለውም</label>
+                    <label><input type="radio" name="q7" value="መ"> መ) ምንም ጥቅም የለውም </label> </div>
+            
+                <div class="question">8. የካርቦሃይድሬት ምንጭ የሆነው የቱ ነው?</div>
+            <div class="options">
+                <label><input type="radio" name="q8" value="ሀ">ሀ. በቆሎ</label>
+                <label><input type="radio" name="q8" value="ለ">ለ. ስጋ</label>
+                <label><input type="radio" name="q8" value="ሐ">ሐ. እንቁላል</label>
+                <label><input type="radio" name="q8" value="መ">መ.የፀሐይ ብርሃን </label>
+            </div>
+
+            <div class="question">9.የፕሮቲን ምንጭ የሆነው የቱ ነው ?</div>
+            <div class="options">
+                <label><input type="radio" name="q9" value="ሀ">ሀ. በቆሎ</label>
+                <label><input type="radio" name="q9" value="ለ">ለ. ስጋ</label>
+                <label><input type="radio" name="q9" value="ሐ">ሐ. ጮማ</label>
+                <label><input type="radio" name="q9" value="መ">መ.የፀሐይ ብርሃን </label>
+            </div>
+
+            <div class="question">10.የቫይታሚን ምንጭ የሆነው የቱ ነው?
+           </div>
+             <div class="options">
+                <label><input type="radio" name="q10" value="ሀ">ሀ. በቆሎ</label>
+                <label><input type="radio" name="q10" value="ለ">ለ. ስጋ</label>
+                <label><input type="radio" name="q10" value="ሐ">ሐ. ጮማ</label>
+                <label><input type="radio" name="q10" value="መ">መ.የፀሐይ ብርሃን </label>           </div>
+
+                              </div>
+
+            <button class="btn" id ="submitBtn">ጨርሻለው</button>
+            <div class="score-box" id="scoreBox"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize attempt counter
+        let attemptCounter = 0;
+
+        // Countdown Timer
+        let countdown = 200; // seconds
+        const countdownElement = document.getElementById('countdown');
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                alert('Time is up!');
+                // Automatically submit quiz when time is up
+                submitQuiz();
+            }
+        }, 1000);
+
+        // Submit Button Functionality
+        document.getElementById('submitBtn').addEventListener('click', submitQuiz);
+
+        function submitQuiz() {
+            let score = 0;
+            const correctAnswers = {
+                q1: 'ለ',
+                q2: 'ሐ',
+                q3: 'ሐ',
+                q4: 'ሐ',
+                q5: 'ለ',
+                q6: 'ሐ',
+                q7: 'ለ',
+                q8: 'ሀ',
+                q9: 'ለ',
+                q10: 'መ',
+                
+            };
+
+            for (let i = 1; i <= 10; i++) {
+                const checkedValue = document.querySelector(`input[name="q${i}"]:checked`);
+                if (checkedValue && checkedValue.value === correctAnswers[`q${i}`]) {
+                    score++;
+                }
+            }
+
+            const scoreBox = document.getElementById('scoreBox');
+            scoreBox.textContent = `SCORE: ${score}`;
+
+            if (score === 10) {
+                showModal('CONGRATULATIONS 🎉🎉🎉');
+                setTimeout(() => {
+                    window.location.href = 'Film2.html';
+                }, 3000);
+            } else {
+                attemptCounter++;
+                if (attemptCounter < 3) {
+                    showModal('Answer the questions properly');
+                } else {
+                    showModal('Study hard');
+                    setTimeout(() => {
+                        window.location.href = 'science.html';
+                    }, 3000);
+                }
+            }
+        }
+
+        // Show Modal
+        function showModal(message) {
+            const modal = document.getElementById('myModal');
+            const modalMessage = document.getElementById('modalMessage');
+            modal.style.display = 'block';
+            modalMessage.textContent = message;
+        }
+
+        // Close Modal
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('myModal').style.display = 'none';
+        });
+
+        // Click outside of modal to close it
+        window.addEventListener('click', (event) => {
+            if (event.target == document.getElementById('myModal')) {
+                document.getElementById('myModal').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>           
+   
+            
