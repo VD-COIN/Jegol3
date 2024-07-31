@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: url('jagolwelcome.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            position: relative;
+            color: #fff;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-text {
+            font-size: 2em;
+            color: #00796b; /* Dark teal */
+            margin-top: 20px;
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .profile-picture-box {
+            width: 150px;
+            height: 150px;
+            background: #ffffff; /* White background */
+            border: 5px solid;
+            border-image: linear-gradient(135deg, #2196f3, #00bcd4) 1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-picture-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-picture-box button {
+            position: absolute;
+            bottom: 10px;
+            background-color: #2196f3; /* Blue */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .profile-picture-box button:hover {
+            background-color: #8bc34a; /* Green */
+        }
+
+        .profile-picture-text {
+            margin-top: 10px;
+            color: #00796b; /* Dark teal */
+            font-size: 1em;
+        }
+
+        .error-message {
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .error-message.required {
+            color: red;
+        }
+
+        .error-message.password {
+            color: red; /* Red for general password issues */
+        }
+
+        .error-message.email {
+            color: red; /* Red for email issues */
+        }
+
+        .password-comment.weak {
+            color: grey;
+        }
+
+        .password-comment.strong {
+            color: black;
+        }
+
+        .password-comment.professional {
+            color: purple;
+        }
+
+        .separator {
+            width: 100%;
+            height: 2px;
+            background-color: #00796b; /* Dark teal */
+            margin: 20px 0;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="password"],
+        .form-container input[type="email"],
+        .form-container input[type="tel"] {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #00796b; /* Dark teal */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            background-color: #2196f3; /* Blue */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #8bc34a; /* Green */
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .checkbox-container label {
+            font-size: 1em;
+            margin-left: 5px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            transform: scale(1.5);
+        }
+
+        .checkbox-container span {
+            color: #00796b; /* Dark teal */
+        }
+
+        .checkbox-container span.error {
+            color: red;
+        }
+
+        .policy-button {
+            margin-top: 20px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>JEGOL</h1>       
+    </header>
+    <div class="container">
+        <div class="login-text">LOGIN</div>
+        <div class="profile-section">
+            <div class="profile-picture-box" id="profilePictureBox">
+                <button id="profileButton">Add</button>
+            </div>
+            <div class="profile-picture-text" id="profilePictureText">Profile Picture</div>
+            <div class="error-message" id="profilePictureError" class="required"></div>
+        </div>
+        <div class="separator"></div>
+        <div class="form-container">
+            <input type="text" id="username" placeholder="Username">
+            <div class="error-message required" id="usernameError"></div>
+
+            <input type="tel" id="phoneNumber" placeholder="Phone Number">
+            <div class="error-message required" id="phoneNumberError"></div>
+
+            <input type="password" id="password" placeholder="Password" oninput="checkPassword()">
+            <div class="error-message password" id="passwordError"></div>
+            <div class="password-comment" id="passwordComment"></div>
+
+            <input type="text" id="address" placeholder="Address">
+            <div class="error-message required" id="addressError"></div>
+
+            <input type="email" id="email" placeholder="Email">
+            <div class="error-message email" id="emailError"></div>
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="privacyPolicy">
+                <span id="privacyPolicyText">I agree with the privacy and usage policy!!</span>
+            </div>
+
+            <button class="policy-button" onclick="window.location.href='privacy.html'">OUR POLICY</button>
+            <button class="policy-button" onclick="validateForm()">Next</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('profileButton').addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.style.display = 'none';
+            input.addEventListener('change', handleFileSelect);
+            document.body.appendChild(input);
+            input.click();
+        });
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const profilePictureBox = document.getElementById('profilePictureBox');
+                    profilePictureBox.innerHTML = `<img src="${e.target.result}" alt="Profile Picture">`;
+                    document.getElementById('profilePictureText').style.display = 'none';
+                    const profileButton = document.getElementById('profileButton');
+                    profileButton.textContent = 'Change';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+       function checkPassword() {
+            const password = document.getElementById('password').value;
+            const passwordError = document.getElementById('passwordError');
+            const passwordComment = document.getElementById('passwordComment');
+            const length = password.length;
+            const hasNumber = /\d/.test(password);
+            const hasLetter = /[a-zA-Z]/.test(password);
+            const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            passwordError.textContent = '';
+            passwordComment.textContent = '';
+
+            if (length !== 9) {
+                passwordError.textContent = 'The password must be 9 characters';
+                passwordError.className = 'error-message password required';
+            } else if (hasNumber && hasLetter && hasSymbol) {
+                passwordComment.textContent = 'Professional 😱😱😱😱!!!';
+                passwordComment.className = 'password-comment professional';
+            } else if ((hasNumber && hasLetter) || (hasNumber && hasSymbol) || (hasLetter && hasSymbol)) {
+                passwordComment.textContent = 'STRONG PASSWORD 😉😉!!!';
+                passwordComment.className = 'password-comment strong';
+            } else {
+                passwordComment.textContent = 'Weak password 🫤!!';
+                passwordComment.className = 'password-comment weak';
+            }
+        }
+
+        function validateForm() {
+            let isValid = true;
+
+            // Clear all previous error messages
+            document.getElementById('profilePictureError').textContent = '';
+            document.getElementById('usernameError').textContent = '';
+            document.getElementById('phoneNumberError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+            document.getElementById('addressError').textContent = '';
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('privacyPolicyText').classList.remove('error');
+
+            // Validate profile picture
+            const profilePictureBox = document.getElementById('profilePictureBox').querySelector('img');
+            if (!profilePictureBox) {
+                document.getElementById('profilePictureError').textContent = 'Profile Picture is required!!';
+                isValid = false;
+            }
+
+            // Validate username
+            const username = document.getElementById('username').value;
+            if (!username) {
+                document.getElementById('usernameError').textContent = 'Username is required!!';
+                isValid = false;
+            }
+
+            // Validate phone number
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            if (!phoneNumber) {
+                document.getElementById('phoneNumberError').textContent = 'Phone number is required!!';
+                isValid = false;
+            }
+
+            // Validate password
+            const password = document.getElementById('password').value;
+            if (!password || password.length !== 9) {
+                document.getElementById('passwordError').textContent = 'The password must be 9 characters';
+                document.getElementById('passwordComment').textContent = '';
+                isValid = false;
+            }
+
+            // Validate address
+            const address = document.getElementById('address').value;
+            if (!address) {
+                document.getElementById('addressError').textContent = 'Address is required!!';
+                isValid = false;
+            }
+
+            // Validate email
+            const email = document.getElementById('email').value;
+            if (!email || !email.includes('@')) {
+                document.getElementById('emailError').textContent = 'The email must contain @';
+                isValid = false;
+            }
+
+            // Validate checkbox
+            const privacyPolicyChecked = document.getElementById('privacyPolicy').checked;
+            if (!privacyPolicyChecked) {
+                document.getElementById('privacyPolicyText').classList.add('error');
+                isValid = false;
+            }
+
+            // Save data to localStorage if valid
+            if (isValid) {
+                const userData = {
+                    profilePicture: document.getElementById('profilePictureBox').querySelector('img')?.src || '',
+                    username: username,
+                    phoneNumber: phoneNumber,
+                    password: password,
+                    address: address,
+                    email: email
+                };
+                localStorage.setItem('userData', JSON.stringify(userData));
+
+                // Show success modal
+                showModal('Data saved successfully! Redirecting to the next page...');
+
+                // Redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = 'additional.html';
+                }, 2000); // 2 seconds delay
+            }
+        }
+
+        function showModal(message) {
+            const modal = document.getElementById('successModal');
+            const modalMessage = document.getElementById('modalMessage');
+            modalMessage.textContent = message;
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('successModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html> 
