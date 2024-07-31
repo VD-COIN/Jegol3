@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialogue Reader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            position: relative;
+        }
+        .header-btns {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .settings-icon {
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .start-reading {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .timer {
+            font-size: 18px;
+        }
+        .dialogue {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .dialogue .line {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .dialogue .person1 {
+            background-color: white;
+            color: black;
+        }
+        .dialogue .person2 {
+            background-color: #f0f0f0;
+            color: black;
+        }
+        .dialogue .word {
+            display: inline-block;
+            transition: background-color 0.2s;
+        }
+        .dialogue .highlight {
+            background-color: lightblue;
+        }
+        .settings-sidebar {
+            position: fixed;
+            top: 0;
+            right: -250px;
+            width: 220px;
+            height: 100%;
+            background-color: #fff;
+            border-left: 1px solid #ddd;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            transition: right 0.3s ease;
+        }
+        .settings-sidebar.open {
+            right: 0;
+        }
+        .settings-sidebar h3 {
+            margin-top: 0;
+        }
+        .settings-sidebar label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .settings-sidebar input[type="range"] {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-btns">
+        <div class="settings-icon" onclick="toggleSidebar()">⚙️</div>
+        <button class="start-reading" onclick="startReading()">Start reading</button>
+        <div class="timer" id="timer">10:00</div>
+    </div>
+</header>
+
+<div class="dialogue" id="dialogue">
+    <div class="line person1">
+        Tom: <span class="word">Hello</span>, <span class="word">Mia</span>!
+    </div>
+    <div class="line person2">
+        Mia: <span class="word">Hi</span>, <span class="word">Tom</span>!
+    </div>
+    <div class="line person1">
+        Tom: <span class="word">How</span> <span class="word">are</span> <span class="word">you</span>?
+    </div>
+    <div class="line person2">
+        Mia: <span class="word">I’m</span> <span class="word">good</span>, <span class="word">thank</span> <span class="word">you</span>. <span class="word">How</span> <span class="word">are</span> <span class="word">you</span>?
+    </div>
+    <div class="line person1">
+        Tom: <span class="word">I’m</span> <span class="word">good</span> <span class="word">too</span>!
+    </div>
+    <div class="line person2">
+        Mia: <span class="word">What</span> <span class="word">is</span> <span class="word">your</span> <span class="word">favorite</span> <span class="word">color</span>?
+    </div>
+    <div class="line person1">
+        Tom: <span class="word">I</span> <span class="word">like</span> <span class="word">blue</span>. <span class="word">What</span> <span class="word">about</span> <span class="word">you</span>?
+    </div>
+    <div class="line person2">
+        Mia: <span class="word">I</span> <span class="word">like</span> <span class="word">pink</span>.
+    </div>
+    <div class="line person1">
+        Tom: <span class="word">That’s</span> <span class="word">nice</span>! <span class="word">What</span> <span class="word">are</span> <span class="word">you</span> <span class="word">doing</span> <span class="word">today</span>?
+    </div>
+    <div class="line person2">
+        Mia: <span class="word">I’m</span> <span class="word">playing</span> <span class="word">with</span> <span class="word">my</span> <span class="word">toys</span>. <span class="word">And</span> <span class="word">you</span>?
+    </div>
+    <div class="line person1">
+        Tom: <span class="word">I’m</span> <span class="word">reading</span> <span class="word">a</span> <span class="word">book</span>.
+    </div>
+    <div class="line person2">
+        Mia: <span class="word">Sounds</span> <span class="word">fun</span>!
+    </div>
+    <div class="line person1">
+        Tom: <span class="word">Yes</span>, <span class="word">it</span> <span class="word">is</span>. <span class="word">See</span> <span class="word">you</span> <span class="word">later</span>, <span class="word">Mia</span>!
+    </div>
+    <div class="line person2">
+        Mia: <span class="word">See</span> <span class="word">you</span>, <span class="word">Tom</span>!
+    </div>
+</div>
+
+<div class="settings-sidebar" id="settingsSidebar">
+    <h3>Settings for Tom</h3>
+    <label for="pitch1">Pitch:</label>
+    <input type="range" id="pitch1" min="0" max="2" step="0.1" value="1">
+    
+    <label for="rate1">Speed:</label>
+    <input type="range" id="rate1" min="0.1" max="2" step="0.1" value="1">
+    
+    <label for="volume1">Volume:</label>
+    <input type="range" id="volume1" min="0" max="1" step="0.1" value="1">
+
+    <h3>Settings for Mia</h3>
+    <label for="pitch2">Pitch:</label>
+    <input type="range" id="pitch2" min="0" max="2" step="0.1" value="1">
+    
+    <label for="rate2">Speed:</label>
+    <input type="range" id="rate2" min="0.1" max="2" step="0.1" value="1">
+    
+    <label for="volume2">Volume:</label>
+    <input type="range" id="volume2" min="0" max="1" step="0.1" value="1">
+</div>
+
+<script>
+    let voices = [];
+    let pitch1 = 1;
+    let rate1 = 1;
+    let volume1 = 1;
+    let pitch2 = 1;
+    let rate2 = 1;
+    let volume2 = 1;
+
+    window.speechSynthesis.onvoiceschanged = () => {
+        voices = window.speechSynthesis.getVoices();
+    };
+
+    function startReading() {
+        let utterances = [
+            { text: "Hello, Mia!", voice: voices[0], pitch: pitch1, rate: rate1, volume: volume1, words: ['Hello', 'Mia'] },
+            { text: "Hi, Tom!", voice: voices[1], pitch: pitch2, rate: rate2, volume: volume2, words: ['Hi', 'Tom'] },
+        { text: "How are you?", voice: voices[0], pitch: pitch1, rate: rate1, volume: volume1, words: ['How', 'are', 'you'] },
+        { text: "I'm good, thank you! How are you?", voice: voices[1], pitch: pitch2, rate: rate2, volume: volume2, words: ['I\'m', 'good', 'thank', 'you', 'How', 'are', 'you'] },
+        { text: "I'm good too!", voice: voices[0], pitch: pitch1, rate: rate1, volume: volume1, words: ['I\'m', 'good', 'too'] },
+        { text: "What is your favorite color?", voice: voices[1], pitch: pitch2, rate: rate2, volume: volume2, words: ['What', 'is', 'your', 'favorite', 'color'] },
+        { text: "I like blue. What about you?", voice: voices[0], pitch: pitch1, rate: rate1, volume: volume1, words: ['I', 'like', 'blue', 'What', 'about', 'you'] },
+        { text: "I like pink.", voice: voices[1], pitch: pitch2, rate: rate2, volume: volume2, words: ['I', 'like', 'pink'] },
+        { text: "That’s nice! What are you doing today?", voice: voices[0], pitch: pitch1, rate: rate1, volume: volume1, words: ['That\'s', 'nice', 'What', 'are', 'you', 'doing', 'today'] },
+        { text: "I’m playing with my toys. And you?", voice: voices[1], pitch: pitch2, rate: rate2, volume: volume2, words: ['I\'m', 'playing', 'with', 'my', 'toys', 'And', 'you'] },
+        { text: "I’m reading a book.", voice: voices[0], pitch: pitch1, rate: rate1, volume: volume1, words: ['I\'m', 'reading', 'a', 'book'] },
+        { text: "Sounds fun!", voice: voices[1], pitch: pitch2, rate: rate2, volume: volume2, words: ['Sounds', 'fun'] },
+        { text: "Yes, it is. See you later, Mia!", voice: voices[0], pitch: pitch1, rate: rate1, volume: volume1, words: ['Yes', 'it', 'is', 'See', 'you', 'later', 'Mia'] },
+        { text: "See you, Tom!", voice: voices[1], pitch: pitch2, rate: rate2, volume: volume2, words: ['See', 'you', 'Tom'] }
+        ];
+
+        let currentIndex = 0;
+
+        function speakNext() {
+            if (currentIndex < utterances.length) {
+                let utterance = new SpeechSynthesisUtterance(utterances[currentIndex].text);
+                utterance.voice = utterances[currentIndex].voice;
+                utterance.pitch = utterances[currentIndex].pitch;
+                utterance.rate = utterances[currentIndex].rate;
+                utterance.volume = utterances[currentIndex].volume;
+
+                let words = utterances[currentIndex].words;
+                let wordElements = Array.from(document.querySelectorAll('.dialogue .line')[currentIndex].querySelectorAll('.word'));
+
+                let wordIndex = -1;
+
+                utterance.onboundary = (event) => {
+                    if (event.name === 'word') {
+                        // Calculate the index of the word being read
+                        let wordLength = event.charLength;
+                        let charIndex = event.charIndex;
+                        let cumulativeLength = 0;
+
+                        wordElements.forEach((wordElement, i) => {
+                            let wordText = wordElement.textContent.trim();
+                            cumulativeLength += wordText.length + 1; // Add 1 for space
+                            if (charIndex >= cumulativeLength - wordText.length && charIndex < cumulativeLength) {
+                                wordIndex = i;
+                            }
+                        });
+
+                        if (wordIndex !== -1) {
+                            wordElements.forEach((wordElement, i) => {
+                                if (i === wordIndex) {
+                                    wordElement.classList.add('highlight');
+                                } else {
+                                    wordElement.classList.remove('highlight');
+                                }
+                            });
+                        }
+                    }
+                };
+
+                utterance.onend = () => {
+                    wordElements.forEach(wordElement => wordElement.classList.remove('highlight'));
+                    currentIndex++;
+                    speakNext();
+                };
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        speakNext();
+    }
+
+    function toggleSidebar() {
+        document.getElementById('settingsSidebar').classList.toggle('open');
+    }
+
+    document.getElementById('pitch1').addEventListener('input', (e) => {
+        pitch1 = e.target.value;
+    });
+
+    document.getElementById('rate1').addEventListener('input', (e) => {
+        rate1 = e.target.value;
+    });
+
+    document.getElementById('volume1').addEventListener('input', (e) => {
+        volume1 = e.target.value;
+    });
+
+    document.getElementById('pitch2').addEventListener('input', (e) => {
+        pitch2 = e.target.value;
+    });
+
+    document.getElementById('rate2').addEventListener('input', (e) => {
+        rate2 = e.target.value;
+    });
+
+    document.getElementById('volume2').addEventListener('input', (e) => {
+        volume2 = e.target.value;
+    });
+
+    // Timer logic
+    let timerDuration = 10 * 60; // 10 minutes in seconds
+    let timerDisplay = document.getElementById('timer');
+    let timerId = setInterval(() => {
+        let minutes = Math.floor(timerDuration / 60);
+        let seconds = timerDuration % 60;
+        timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        if (timerDuration <= 0) {
+            clearInterval(timerId);
+            window.location.href = 'Film4.html';
+        } else {
+            timerDuration--;
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>   

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Additional Information</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: url('jagolwelcome.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            position: relative;
+            color: #fff;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .animated-text {
+            font-size: 1.5em;
+            color: #00796b; /* Dark teal */
+            margin-bottom: 20px;
+            animation: fadeIn 3s infinite;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .question {
+            font-size: 1.2em;
+            color: #00796b; /* Dark teal */
+            margin-bottom: 20px;
+        }
+
+        .select-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .select-container select {
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #00796b; /* Dark teal */
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #00796b; /* Dark teal */
+            margin: 0 5px;
+        }
+
+        .display-box {
+            font-size: 1.2em;
+            color: #00796b; /* Dark teal */
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container label {
+            font-size: 1em;
+            color: #00796b; /* Dark teal */
+            margin: 5px 0;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .finish-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            background-color: #2196f3; /* Blue */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .finish-button:hover {
+            background-color: #8bc34a; /* Green */
+        }
+
+        .error {
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>JAGOL</h1>       
+    </header>
+    <div class="container">
+        <div class="animated-text">ADDITIONAL INFORMATION</div>
+        
+        <div class="question">DATE OF BIRTH</div>
+        <div class="select-container">
+            <select id="day">
+                <option value="">Day</option>
+                <!-- Generate days -->
+                <script>
+                    for (let i = 1; i <= 31; i++) {
+                        document.write('<option value="' + i + '">' + i + '</option>');
+                    }
+                </script>
+            </select>
+            <select id="month">
+                <option value="">Month</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+            <select id="year">
+                <option value="">Year</option>
+                <!-- Generate years from 1900 to current year -->
+                <script>
+                    const currentYear = new Date().getFullYear();
+                    for (let i = currentYear; i >= 1900; i--) {
+                        document.write('<option value="' + i + '">' + i + '</option>');
+                    }
+                </script>
+            </select>
+        </div>
+        <div class="display-box" id="ageDisplay">You are __ years old.</div>
+        
+        <div class="question">HOW IS YOUR PERFORMANCE?</div>
+        <div class="checkbox-container" id="performance">
+            <label><input type="radio" name="performance" value="VERY CLEVER"> VERY CLEVER</label>
+            <label><input type="radio" name="performance" value="INTERMEDIATE"> INTERMEDIATE</label>
+            <label><input type="radio" name="performance" value="NOT BAD"> NOT BAD</label>
+            <label><input type="radio" name="performance" value="WORST"> WORST</label>
+        </div>
+
+        <div class="question">WHERE DO YOU LIVE?</div>
+        <div class="checkbox-container" id="region">
+            <label><input type="radio" name="region" value="Addis Ababa"> Addis Ababa</label>
+            <label><input type="radio" name="region" value="Afar"> Afar</label>
+            <label><input type="radio" name="region" value="Amhara"> Amhara</label>
+            <label><input type="radio" name="region" value="Benishangul-Gumuz"> Benishangul-Gumuz</label>
+            <label><input type="radio" name="region" value="Dire Dawa"> Dire Dawa</label>
+            <label><input type="radio" name="region" value="Gambela"> Gambela</label>
+            <label><input type="radio" name="region" value="Harari"> Harari</label>
+            <label><input type="radio" name="region" value="Oromia"> Oromia</label>
+            <label><input type="radio" name="region" value="Sidama"> Sidama</label>
+            <label><input type="radio" name="region" value="Somali"> Somali</label>
+            <label><input type="radio" name="region" value="Southern Nations, Nationalities, and Peoples'"> Southern Nations, Nationalities, and Peoples'</label>
+            <label><input type="radio" name="region" value="Tigray"> Tigray</label>
+        </div>
+
+        <button class="finish-button" onclick="validateForm()">FINISH</button>
+    </div>
+
+    <script>
+        const daySelect = document.getElementById('day');
+        const monthSelect = document.getElementById('month');
+        const yearSelect = document.getElementById('year');
+        const ageDisplay = document.getElementById('ageDisplay');
+
+        function calculateAge(day, month, year) {
+            const today = new Date();
+            const birthDate = new Date(year, month - 1, day);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        function validateForm() {
+            let isValid = true;
+
+            const day = daySelect.value;
+            const month = monthSelect.value;
+            const year = yearSelect.value;
+
+            const performanceRadios = document.querySelectorAll('#performance input[type="radio"]');
+            const regionRadios = document.querySelectorAll('#region input[type="radio"]');
+
+            daySelect.classList.remove('error');
+            monthSelect.classList.remove('error');
+            yearSelect.classList.remove('error');
+            document.getElementById('performance').classList.remove('error');
+            document.getElementById('region').classList.remove('error');
+
+            if (!day || !month || !year) {
+                isValid = false;
+                if (!day) daySelect.classList.add('error');
+                if (!month) monthSelect.classList.add('error');
+                if (!year) yearSelect.classList.add('error');
+            }
+
+            let performanceSelected = false;
+            performanceRadios.forEach(radio => {
+                if (radio.checked) performanceSelected = true;
+            });
+            if (!performanceSelected) {
+                isValid = false;
+                document.getElementById('performance').classList.add('error');
+            }
+
+            let regionSelected = false;
+            regionRadios.forEach(radio => {
+                if (radio.checked) regionSelected = true;
+            });
+            if (!regionSelected) {
+                isValid = false;
+                document.getElementById('region').classList.add('error');
+            }
+
+            if (isValid) {
+                const age = calculateAge(day, month, year);
+                const performance = Array.from(performanceRadios).find(radio => radio.checked)?.value || '';
+                const region = Array.from(regionRadios).find(radio => radio.checked)?.value || '';
+
+                localStorage.setItem('dateOfBirth', `${day}-${month}-${year}`);
+                localStorage.setItem('age', age);
+                localStorage.setItem('performance', performance);
+                localStorage.setItem('region', region);
+
+                window.location.href = 'Verify.html';
+            }
+        }
+
+        function updateAgeDisplay() {
+            const day = daySelect.value;
+            const month = monthSelect.value;
+            const year = yearSelect.value;
+            if (day && month && year) {
+                const age = calculateAge(day, month, year);
+                ageDisplay.textContent = `You are ${age} years old.`;
+            } else {
+                ageDisplay.textContent = 'You are __ years old.';
+            }
+        }
+
+        daySelect.addEventListener('change', updateAgeDisplay);
+        monthSelect.addEventListener('change', updateAgeDisplay);
+        yearSelect.addEventListener('change', updateAgeDisplay);
+    </script>
+</body>
+</html>

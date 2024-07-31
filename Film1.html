@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kid-Friendly Video Player</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e0f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .video-container {
+            max-width: 900px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin: 20px;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background-color: #4caf50;
+        }
+        .button {
+            background-color: #ffeb3b;
+            border: none;
+            color: #000;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button:hover {
+            background-color: #fbc02d;
+            transform: scale(1.05);
+        }
+        .button:active {
+            background-color: #f9a825;
+            transform: scale(0.95);
+        }
+        .next-button {
+            background-color: #ff5722;
+        }
+        .next-button:hover {
+            background-color: #e64a19;
+        }
+        .next-button:active {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <video id="videoPlayer" controls>
+            <source src="Film1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="controls">
+            <button class="button" onclick="playVideo()">Play</button>
+            <button class="button" onclick="pauseVideo()">Pause</button>
+            <button class="button" onclick="stopVideo()">Stop</button>
+            <button class="button next-button" onclick="goToNext()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        function playVideo() {
+            var video = document.getElementById('videoPlayer');
+            video.play();
+        }
+
+        function pauseVideo() {
+            var video = document.getElementById('videoPlayer');
+            video.pause();
+        }
+
+        function stopVideo() {
+            var video = document.getElementById('videoPlayer');
+            video.pause();
+            video.currentTime = 0;
+        }
+
+        function goToNext() {
+            window.location.href = 'science.html';
+        }
+    </script>
+</body>
+</html>
